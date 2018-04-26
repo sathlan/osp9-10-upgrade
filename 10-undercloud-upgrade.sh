@@ -12,10 +12,7 @@ yum repolist -v enabled
 
 env
 
-step="$(basename $0)"
-export CURRENT_STEP="${step%.sh}"
-
 sudo systemctl stop 'openstack-*' 'neutron-*' httpd
 sudo yum update -y python-tripleoclient
 
-nohup openstack undercloud upgrade > ${CURRENT_STEP}.log
+openstack undercloud upgrade

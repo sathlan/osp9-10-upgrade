@@ -14,7 +14,4 @@ EOF
 env
 export DEPLOY_ENV_YAML='/usr/share/openstack-tripleo-heat-templates/environments/major-upgrade-pacemaker-init.yaml -e /home/stack/overcloud-repos.yaml'
 
-step="$(basename $0)"
-export CURRENT_STEP="${step%.sh}"
-
 exec ${HOME}/overcloud-deploy.sh -e $DEPLOY_ENV_YAML

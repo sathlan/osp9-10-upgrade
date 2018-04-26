@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 #
 # Script that spawns an instance
 
@@ -85,7 +85,7 @@ openstack server create  \
     --nic net-id=${TENANT_NET_ID} \
     $INSTANCE_NAME
 
-timeout_seconds=120
+timeout_seconds=240
 elapsed_seconds=0
 while true; do
     if [ $before_osp_10 = 'true' ]; then
