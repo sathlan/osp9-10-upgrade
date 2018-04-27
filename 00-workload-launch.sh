@@ -89,7 +89,7 @@ timeout_seconds=240
 elapsed_seconds=0
 while true; do
     if [ $before_osp_10 = 'true' ]; then
-        INSTANCE_ACTIVE=$(openstack server show instance_76c6a025ed| awk '/^\| status /{print $4}')
+        INSTANCE_ACTIVE=$(openstack server show $INSTANCE_NAME| awk '/^\| status /{print $4}')
     else
         INSTANCE_ACTIVE=$(openstack server show $INSTANCE_NAME -f json | jq -r .status)
     fi
