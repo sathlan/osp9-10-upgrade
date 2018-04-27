@@ -8,9 +8,14 @@ nova service-list > ~/${suffix}-info.log
 neutron agent-list >> ~/${suffix}-info.log
 
 . ~/stackrc
-openstack server list -f json > ~/server.json
+if [ ! -e ~/server.json ]; then
+    openstack server list -f json > ~/server.json
+fi
 
-jq -r '.[] | select(.Name | contains("controller"))|.Networks' ~/server.json | cut -d= -f2 > ~/controller-ip.txt
-jq -r '.[] | select(.Name | contains("compute"))|.Networks' ~/server.json | cut -d= -f2 > ~/compute-ip.txt
-
+if [ ! -e ~/controller-ip.txt ]; then
+    jq -r '.[] | select(.Name | contains("controller"))|.Networks' ~/server.json | cut -d= -f2 > ~/controller-ip.txt
+fi
+if [ ! -e ~/compute-ip.txt]; then
+    jq -r '.[] | select(.Name | contains("compute"))|.Networks' ~/server.json | cut -d= -f2 > ~/compute-ip.txt
+fi
 sudo yum install -y strace vim tcpdump
