@@ -3,7 +3,7 @@ set -eux
 
 . ${HOME}/stackrc
 
-cat > overcloud-repos.yaml <<EOF
+cat > ~/overcloud-repos.yaml <<EOF
 parameter_defaults:
   UpgradeInitCommand: |
     set -e
