@@ -10,6 +10,7 @@ while [ $cpt -le 20 -a -e $log ] ; do
     cpt=$((cpt+1))
 done
 
+date > ~/${script}-start
 nohup ./${script} > $log &
 disown
 
