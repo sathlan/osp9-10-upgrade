@@ -16,9 +16,10 @@ for review in $REVIEWS; do
     cat $review.patch | sudo patch -d "/usr/share/openstack-tripleo-heat-templates" -p1
 done
 
+curl -L -o ./patch-puppet-module https://raw.githubusercontent.com/sathlan/tripleo-patch-puppet-modules/master/bin/tripleo-patch-puppet-modules.in
 bash -x ./patch-puppet-module -r tripleo:562542
 
 upload-puppet-modules -d ~/puppet-modules --environment ${HOME}/puppet-patch.yaml
 if ! grep puppet-patch.yaml overcloud-deploy.sh; then
-    sed -i.before-patch -e 's,\$@,-e ${HOME}/puppet-patch.yaml $@,' overcloud-deploy.sh
+    sed -i.before-patch -e 's,\$@,-e ${HOME}/puppet-patch.yaml $@,' ~/overcloud-deploy.sh
 fi
