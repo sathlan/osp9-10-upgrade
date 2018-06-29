@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 set -eu
-. instance.txt
+. ~/instance.txt
 
 IP="$fip"
 ID="$instance"                      # free form string
 STATUS='unknown'
-LOG=current_state_${IP}_${ID}.log
+LOG=${HOME}/current_state_${IP}_${ID}.log
 
 [ ! -e "$LOG" ] || exit 0
 
