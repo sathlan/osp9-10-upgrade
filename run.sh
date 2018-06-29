@@ -12,4 +12,5 @@ done
 
 nohup ./${script} > $log &
 disown
-tail -f $log
+
+echo tail -f $log
