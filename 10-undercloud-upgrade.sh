@@ -1,6 +1,7 @@
 #!/usr/bin/bash
 set -eux
 
+./timestamp-ping.sh 10-undercloud-upgrade-begin
 yum repolist -v enabled
 sudo systemctl list-units 'openstack-*'
 
@@ -16,3 +17,4 @@ sudo systemctl stop 'openstack-*' 'neutron-*' httpd
 sudo yum update -y python-tripleoclient
 
 openstack undercloud upgrade
+./timestamp-ping.sh 10-undercloud-upgrade-end

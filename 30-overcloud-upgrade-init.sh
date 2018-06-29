@@ -14,4 +14,6 @@ EOF
 env
 export DEPLOY_ENV_YAML='/usr/share/openstack-tripleo-heat-templates/environments/major-upgrade-pacemaker-init.yaml -e /home/stack/overcloud-repos.yaml'
 
+./timestamp-ping.sh 30-overcloud-upgrade-init-begin
 exec ${HOME}/overcloud-deploy.sh -e $DEPLOY_ENV_YAML
+./timestamp-ping.sh 30-overcloud-upgrade-init-end
