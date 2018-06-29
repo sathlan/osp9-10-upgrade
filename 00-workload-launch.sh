@@ -129,4 +129,7 @@ else
 fi
 echo "floating-ip: $FIP" > ~/${INSTANCE_NAME}
 
+echo fip=${FIP} > ~/instance.txt
+echo instance=${instance_name} > ~/instance.txt
+
 ping -D ${FIP} >> ~/ping_results_$(date +%Y%m%d%H%M).log &
