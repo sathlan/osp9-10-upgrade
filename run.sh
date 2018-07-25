@@ -3,14 +3,16 @@
 set -eux
 
 script="${1:?You must provide the script to run}"
-log=${HOME}/${script}.log
+log=${script//\.\//_}
+log=${HOME}/${log//\//_}.log
+
 cpt=1
 while [ $cpt -le 20 -a -e $log ] ; do
-    log=${HOME}/${script}.${cpt}.log
+    log=${log}.${cpt}.log
     cpt=$((cpt+1))
 done
 
-date > ~/${script}-start
+date > ${log}-start
 nohup ./${script} > $log &
 disown
 
