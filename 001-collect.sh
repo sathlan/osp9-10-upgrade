@@ -11,13 +11,11 @@ neutron agent-list >> ~/${suffix}-info.log
 if [ ! -e ~/server.json ]; then
     openstack server list -f json > ~/server.json
 fi
-
-if [ ! -e ~/controller-ip.txt ]; then
-    jq -r '.[] | select(.Name | contains("controller"))|.Networks' ~/server.json | cut -d= -f2 > ~/controller-ip.txt
-fi
-if [ ! -e ~/compute-ip.txt ]; then
-    jq -r '.[] | select(.Name | contains("compute"))|.Networks' ~/server.json | cut -d= -f2 > ~/compute-ip.txt
-fi
+for i in controller compute ceph; do
+    if [ ! -e ~/${i}-ip.txt ]; then
+        jq -r '.[] | select(.Name | contains("'${i}'"))|.Networks' ~/server.json | cut -d= -f2 > ~/${i}-ip.txt
+    fi
+done
 
 # bz 1595315
 suffix=pre-pre
