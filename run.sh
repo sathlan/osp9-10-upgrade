@@ -8,7 +8,7 @@ log=${HOME}/${log//\//_}.log
 
 cpt=1
 while [ $cpt -le 20 -a -e $log ] ; do
-    log=${log%.*}.${cpt}
+    log=${log%.*}.log.${cpt}
     cpt=$((cpt+1))
 done
 
