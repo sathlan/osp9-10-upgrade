@@ -16,6 +16,12 @@ EXTERNAL_NET_NAME='public'
 
 source ${OVERCLOUD_RC}
 
+openstack_version="$(openstack --version 2>&1)"
+before_osp_10='false'
+if [[ "$openstack_version" == *2.3.1 ]]; then
+    before_osp_10='true'
+fi
+
 ## create image
 
 if ! openstack image list | grep ${IMAGE_NAME} ; then
@@ -43,11 +49,6 @@ if ! openstack network list | grep ${TENANT_NET_NAME}; then
     openstack router create ${TENANT_NET_NAME}_router
     openstack network create ${TENANT_NET_NAME}
     # for osp9
-    openstack_version="$(openstack --version 2>&1)"
-    before_osp_10='false'
-    if [[ "$openstack_version" == *2.3.1 ]]; then
-        before_osp_10='true'
-    fi
     if [ $before_osp_10 = 'true' ]; then
         neutron subnet-create --allocation-pool start=192.168.0.10,end=192.168.0.100 \
                 --gateway 192.168.0.254 \
