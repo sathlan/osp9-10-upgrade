@@ -11,7 +11,7 @@ neutron agent-list >> ~/${suffix}-info.log
 if [ ! -e ~/server.json ]; then
     openstack server list -f json > ~/server.json
 fi
-for i in controller compute ceph; do
+for i in controller compute ceph networker; do
     if [ ! -e ~/${i}-ip.txt ]; then
         jq -r '.[] | select(.Name | contains("'${i}'"))|.Networks' ~/server.json | cut -d= -f2 > ~/${i}-ip.txt
     fi
