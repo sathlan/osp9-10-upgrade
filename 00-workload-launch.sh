@@ -18,8 +18,12 @@ source ${OVERCLOUD_RC}
 
 openstack_version="$(openstack --version 2>&1)"
 before_osp_10='false'
+before_osp_11='false'
 if [[ "$openstack_version" == *2.3.1 ]]; then
     before_osp_10='true'
+fi
+if [[ "$openstack_version" == *3.2.* ]]; then
+    before_osp_11='true'
 fi
 
 ## create image
@@ -49,12 +53,12 @@ if ! openstack network list | grep ${TENANT_NET_NAME}; then
     openstack router create ${TENANT_NET_NAME}_router
     openstack network create ${TENANT_NET_NAME}
     # for osp9
-    if [ $before_osp_10 = 'true' ]; then
+    if [ $before_osp_11 = 'true' ]; then
         neutron subnet-create --allocation-pool start=192.168.0.10,end=192.168.0.100 \
                 --gateway 192.168.0.254 \
                 --dns-nameserver ${NAMESERVER} --name ${TENANT_NET_NAME}_subnet ${TENANT_NET_NAME} 192.168.0.0/24
         neutron router-interface-add ${TENANT_NET_NAME}_router ${TENANT_NET_NAME}_subnet
-        neutron router-gateway-set ${TENANT_NET_NAME}_router public
+        neutron router-gateway-set ${TENANT_NET_NAME}_router ${EXTERNAL_NET_NAME}
     else
         openstack subnet create \
                   --subnet-range 192.168.0.0/24 \
@@ -118,7 +122,7 @@ fi
 
 neutron floatingip-associate ${INSTANCE_FIP} ${INSTANCE_PORT}
 
-if [ $before_osp_10 != 'true' ]; then
+if [ $before_osp_11 != 'true' ]; then
     ## create and attach a volume
     CINDER_VOL_ID=$(openstack volume create --size 1 vol_$(openssl rand -hex 5) -f json | jq -r .id)
     openstack server add volume ${INSTANCE_NAME} ${CINDER_VOL_ID}
